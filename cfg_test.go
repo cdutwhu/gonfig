@@ -25,12 +25,12 @@ func TestModify(t *testing.T) {
 	cfg := &Config{}
 	_, err := toml.DecodeFile("./toml/test.toml", cfg)
 	failOnErr("%v", err)
-	Icfg := Modify(cfg, map[string]interface{}{
+	ICfg := Modify(cfg, map[string]interface{}{
 		"[PORT]": 1234,
 		"[s]":    "gonfig",
 		"[v]":    "v1.2.3",
 	})
-	cfg = Icfg.(*Config)
+	cfg = ICfg.(*Config)
 	spew.Dump(cfg)
 }
 

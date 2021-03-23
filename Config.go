@@ -2,11 +2,11 @@ package gonfig
 
 // Config : AUTO Created From "gonfig/toml/test.toml"
 type Config struct {
-	Port int
 	Service interface{}
 	IP interface{}
 	LogFile string
 	Path interface{}
+	Port int
 	Storage struct {
 		BadgerDBPath string
 		DataBase string
@@ -18,32 +18,32 @@ type Config struct {
 		Version interface{}
 	}
 	Route struct {
-		Update string
-		Delete string
-		LsID string
-		LsObject string
-		LsContext string
-		LsUser string
-		ROOT string
 		Get string
 		GetHash string
+		LsContext string
+		ROOT string
+		Delete string
 		GetID string
+		LsID string
+		LsObject string
+		LsUser string
+		Update string
 	}
 	File struct {
-		ClientWin64 string
-		MaskConfig string
-		MaskLinux64 string
-		MaskMac string
 		MaskWin64 string
 		ClientConfig string
 		ClientLinux64 string
 		ClientMac string
+		ClientWin64 string
+		MaskConfig string
+		MaskLinux64 string
+		MaskMac string
 	}
 	Server struct {
+		Port interface{}
 		Protocol string
 		Service string
 		IP interface{}
-		Port interface{}
 	}
 	Access struct {
 		Timeout int
@@ -71,31 +71,31 @@ type Config1 struct {
 		MetaPath string
 	}
 	WebService struct {
-		Port interface{}
 		Service string
 		Version interface{}
+		Port interface{}
 	}
 	Route struct {
+		LsObject string
+		ROOT string
 		Get string
-		GetID string
-		LsContext string
+		GetHash string
 		LsID string
 		LsUser string
-		ROOT string
 		Update string
 		Delete string
-		GetHash string
-		LsObject string
+		GetID string
+		LsContext string
 	}
 	File struct {
+		ClientLinux64 string
+		ClientMac string
+		ClientWin64 string
 		MaskConfig string
 		MaskLinux64 string
 		MaskMac string
 		MaskWin64 string
 		ClientConfig string
-		ClientLinux64 string
-		ClientMac string
-		ClientWin64 string
 	}
 	Server struct {
 		IP interface{}

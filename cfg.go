@@ -79,7 +79,7 @@ func GitTag() (tag string, err error) {
 
 // Modify : only 2 levels struct variable could be modified. that is enough for config
 func Modify(cfg interface{}, mRepl map[string]interface{}) interface{} {
-	if mRepl == nil || len(mRepl) == 0 {
+	if len(mRepl) == 0 {
 		return cfg
 	}
 	if vof(cfg).Kind() == typPTR {
@@ -278,45 +278,45 @@ func Save(fpath string, cfg interface{}) {
 // 	return false, file
 // }
 
-func mkFuncs(impt, prj, pkg, fnDir string) {
-	pkg = sToLower(pkg)
-	fnFile := fnDir + "/auto_" + prj + "_" + pkg + ".go"
+// func mkFuncs(impt, prj, pkg, fnDir string) {
+// 	pkg = sToLower(pkg)
+// 	fnFile := fnDir + "/auto_" + prj + "_" + pkg + ".go"
 
-	prj = replAllOnAny(prj, []string{"-", " "}, "")
-	pkg = replAllOnAny(pkg, []string{"-", " "}, "")
+// 	prj = replAllOnAny(prj, []string{"-", " "}, "")
+// 	pkg = replAllOnAny(pkg, []string{"-", " "}, "")
 
-	prj, pkg = sTitle(prj), sTitle(pkg)
-	fnNew := `New` + prj + pkg
-	fnToEnv := `ToEnv` + prj + pkg
-	fnFromEnv := `FromEnv` + prj + pkg
+// 	prj, pkg = sTitle(prj), sTitle(pkg)
+// 	fnNew := `New` + prj + pkg
+// 	fnToEnv := `ToEnv` + prj + pkg
+// 	fnFromEnv := `FromEnv` + prj + pkg
 
-	src := `package gonfig` + "\n\n"
-	src += `import auto "` + impt + `"` + "\n"
-	src += `import "os"` + "\n\n"
-	src += `func ` + fnNew + `(mReplExpr map[string]string, cfgPaths ...string) *auto.Config {` + "\n"
-	src += `    defer func() { mux.Unlock() }()` + "\n"
-	src += `    mux.Lock()` + "\n"
-	src += `    cfg := &auto.Config{}` + "\n"
-	src += `    for _, f := range cfgPaths {` + "\n"
-	src += `        if _, e := os.Stat(f); e == nil {` + "\n"
-	src += `            return initCfg(f, cfg, mReplExpr).(*auto.Config)` + "\n"
-	src += `        }` + "\n"
-	src += `    }` + "\n"
-	src += `    return nil` + "\n"
-	src += `}` + "\n\n"
-	src += `// -------------------------------- //` + "\n\n"
-	src += `func ` + fnToEnv + `(mReplExpr map[string]string, key string, cfgPaths ...string) *auto.Config {` + "\n"
-	src += `    cfg := ` + fnNew + `(mReplExpr, append(cfgPaths, "./config.toml")...)` + "\n"
-	src += `    if cfg == nil {` + "\n"
-	src += `        return nil` + "\n"
-	src += `    }` + "\n"
-	src += `    struct2Env(key, cfg)` + "\n"
-	src += `    return cfg` + "\n"
-	src += `}` + "\n\n"
-	src += `// -------------------------------- //` + "\n\n"
-	src += `func ` + fnFromEnv + `(key string) *auto.Config {` + "\n"
-	src += `    return env2Struct(key, &auto.Config{}).(*auto.Config)` + "\n"
-	src += `}` + "\n\n"
+// 	src := `package gonfig` + "\n\n"
+// 	src += `import auto "` + impt + `"` + "\n"
+// 	src += `import "os"` + "\n\n"
+// 	src += `func ` + fnNew + `(mReplExpr map[string]string, cfgPaths ...string) *auto.Config {` + "\n"
+// 	src += `    defer func() { mux.Unlock() }()` + "\n"
+// 	src += `    mux.Lock()` + "\n"
+// 	src += `    cfg := &auto.Config{}` + "\n"
+// 	src += `    for _, f := range cfgPaths {` + "\n"
+// 	src += `        if _, e := os.Stat(f); e == nil {` + "\n"
+// 	src += `            return initCfg(f, cfg, mReplExpr).(*auto.Config)` + "\n"
+// 	src += `        }` + "\n"
+// 	src += `    }` + "\n"
+// 	src += `    return nil` + "\n"
+// 	src += `}` + "\n\n"
+// 	src += `// -------------------------------- //` + "\n\n"
+// 	src += `func ` + fnToEnv + `(mReplExpr map[string]string, key string, cfgPaths ...string) *auto.Config {` + "\n"
+// 	src += `    cfg := ` + fnNew + `(mReplExpr, append(cfgPaths, "./config.toml")...)` + "\n"
+// 	src += `    if cfg == nil {` + "\n"
+// 	src += `        return nil` + "\n"
+// 	src += `    }` + "\n"
+// 	src += `    struct2Env(key, cfg)` + "\n"
+// 	src += `    return cfg` + "\n"
+// 	src += `}` + "\n\n"
+// 	src += `// -------------------------------- //` + "\n\n"
+// 	src += `func ` + fnFromEnv + `(key string) *auto.Config {` + "\n"
+// 	src += `    return env2Struct(key, &auto.Config{}).(*auto.Config)` + "\n"
+// 	src += `}` + "\n\n"
 
-	mustWriteFile(fnFile, []byte(src))
-}
+// 	mustWriteFile(fnFile, []byte(src))
+// }
