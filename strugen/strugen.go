@@ -3,6 +3,8 @@ package strugen
 import (
 	"os"
 	"path/filepath"
+
+	"github.com/cdutwhu/gonfig"
 )
 
 func scanToml(tomllines []string) (slAttrs, grpAttrs []string) {
@@ -142,8 +144,10 @@ func GenStruct(tomlFile, struName, pkgName, struFile string) bool {
 	}
 
 	// Trim tomlFile showing on "AUTO..." comment line
-	tomlFile = tomlFile[sIndex(tomlFile, "/"+pkgName):]
-	tomlFile = "\"" + tomlFile[1:] + "\""
+	if prjName, ok := gonfig.PrjName(); ok {
+		tomlFile = tomlFile[sIndex(tomlFile, "/"+prjName):]
+		tomlFile = "\"" + tomlFile[1:] + "\""
+	}
 
 	struStr += fSf("// %s : AUTO Created From %s\n", struName, tomlFile)
 	struStr += fSf("type %s struct {\n", struName)
