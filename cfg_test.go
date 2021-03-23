@@ -90,10 +90,10 @@ func TestToEnvVar(t *testing.T) {
 	spew.Dump(cfg)
 }
 
-// echo 'password' | sudo -S env "PATH=$PATH" go test -v -count=1 ./ -run TestRegister
-func TestRegister(t *testing.T) {
-	prj, _ := PrjName()
-	pkg := "Server"
-	ok, file := Register("qmiao", "./toml/test.toml", prj, pkg)
-	fPln(ok, file)
-}
+// // echo 'password' | sudo -S env "PATH=$PATH" go test -v -count=1 ./ -run TestRegister
+// func TestRegister(t *testing.T) {
+// 	prj, _ := PrjName()
+// 	pkg := "Server"
+// 	ok, file := Register("qmiao", "./toml/test.toml", prj, pkg)
+// 	fPln(ok, file)
+// }

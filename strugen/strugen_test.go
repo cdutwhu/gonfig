@@ -1,7 +1,6 @@
 package strugen
 
 import (
-	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -12,7 +11,7 @@ var (
 )
 
 func TestScanToml(t *testing.T) {
-	bytes, err := ioutil.ReadFile(toml)
+	bytes, err := os.ReadFile(toml)
 	failP1OnErr("%v", err)
 	lines := splitLn(string(bytes))
 	attrs1, attrs2 := scanToml(lines)
@@ -21,7 +20,7 @@ func TestScanToml(t *testing.T) {
 }
 
 func TestAttrsRange(t *testing.T) {
-	bytes, err := ioutil.ReadFile(toml)
+	bytes, err := os.ReadFile(toml)
 	failP1OnErr("%v", err)
 	lines := splitLn(string(bytes))
 	for k, v := range attrsRange(lines) {
@@ -30,7 +29,7 @@ func TestAttrsRange(t *testing.T) {
 }
 
 func TestAttrTypes(t *testing.T) {
-	bytes, err := ioutil.ReadFile(toml)
+	bytes, err := os.ReadFile(toml)
 	failP1OnErr("%v", err)
 	lines := splitLn(string(bytes))
 	for k, v := range attrTypes(lines, "") {
@@ -40,9 +39,9 @@ func TestAttrTypes(t *testing.T) {
 
 func TestGenStruct(t *testing.T) {
 	enableWarnDetail(false)
-	cfgsrc := "../Config.go"
-	os.Remove(cfgsrc)
-	GenStruct(toml, "Config", "gonfig", cfgsrc)
-	GenStruct(toml1, "Config1", "gonfig", cfgsrc)
-	GenNewCfg(cfgsrc)
+	cfgSrc := "../Config.go"
+	os.Remove(cfgSrc)
+	GenStruct(toml, "Config", "gonfig", cfgSrc)
+	GenStruct(toml1, "Config1", "gonfig", cfgSrc)
+	GenNewCfg(cfgSrc)
 }

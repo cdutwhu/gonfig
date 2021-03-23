@@ -4,13 +4,11 @@ import (
 	"encoding/json"
 	"os"
 	"os/exec"
-	"os/user"
 	"path/filepath"
 	"strconv"
 	"time"
 
 	"github.com/BurntSushi/toml"
-	"github.com/cdutwhu/gonfig/strugen"
 )
 
 // SetDftCfgVal :
@@ -245,40 +243,40 @@ func Save(fpath string, cfg interface{}) {
 // --------------------------------------------------------------------------------------------------- //
 
 // Register : echo 'password' | sudo -S env "PATH=$PATH" go test -v -count=1 ./ -run TestRegister
-func Register(funcOSUser, tomlFile, prjName, pkgName string) (bool, string) {
-	enableLog2F(true, logfile)
-	if funcOSUser == "" {
-		user, err := user.Current()
-		failOnErr("%v", err)
-		funcOSUser = user.Name
-	}
+// func Register(funcOSUser, tomlFile, prjName, pkgName string) (bool, string) {
+// 	enableLog2F(true, logfile)
+// 	if funcOSUser == "" {
+// 		user, err := user.Current()
+// 		failOnErr("%v", err)
+// 		funcOSUser = user.Name
+// 	}
 
-	pkgName = sToLower(pkgName)
-	dir, _ := callerSrc()
-	gonfigDir := dir                                                      // filepath.Dir(dir)
-	gonfigDir = sReplace(gonfigDir, "/root/", "/home/"+funcOSUser+"/", 1) // sudo root go pkg --> input OS-user go pkg
-	file := gonfigDir + fSf("/.cache/%s/%s/Config.go", prjName, pkgName)  // cfg struct Name as to be go fileName
+// 	pkgName = sToLower(pkgName)
+// 	dir, _ := callerSrc()
+// 	gonfigDir := dir                                                      // filepath.Dir(dir)
+// 	gonfigDir = sReplace(gonfigDir, "/root/", "/home/"+funcOSUser+"/", 1) // sudo root go pkg --> input OS-user go pkg
+// 	file := gonfigDir + fSf("/.cache/%s/%s/Config.go", prjName, pkgName)  // cfg struct Name as to be go fileName
 
-	logger("ready to generate: %v", file)
-	if !strugen.GenStruct(tomlFile, "Config", pkgName, file) {
-		return false, ""
-	}
-	logger("finish generating: %v", file)
+// 	logger("ready to generate: %v", file)
+// 	if !strugen.GenStruct(tomlFile, "Config", pkgName, file) {
+// 		return false, ""
+// 	}
+// 	logger("finish generating: %v", file)
 
-	// file LIKE `/home/qmiao/go/pkg/mod/github.com/cdutwhu/gonfig@v0.1.2/***/***/Config.go`
-	pkgmark := "/go/pkg/mod/"
-	if sContains(file, pkgmark) {
-		fullpkg := filepath.Dir(sSplit(file, pkgmark)[1])
-		logger("generated package path: %v", fullpkg)
-		pos := rxMustCompile(`@[^/]+/`).FindAllStringIndex(fullpkg, -1)
-		pkg := replByPosGrp(fullpkg, pos, []string{""}, 0, 1)
-		logger("generated package: %v", pkg)
-		// make necessary functions for using
-		mkFuncs(pkg, prjName, pkgName, gonfigDir)
-		return true, pkg
-	}
-	return false, file
-}
+// 	// file LIKE `/home/qmiao/go/pkg/mod/github.com/cdutwhu/gonfig@v0.1.2/***/***/Config.go`
+// 	pkgmark := "/go/pkg/mod/"
+// 	if sContains(file, pkgmark) {
+// 		fullpkg := filepath.Dir(sSplit(file, pkgmark)[1])
+// 		logger("generated package path: %v", fullpkg)
+// 		pos := rxMustCompile(`@[^/]+/`).FindAllStringIndex(fullpkg, -1)
+// 		pkg := replByPosGrp(fullpkg, pos, []string{""}, 0, 1)
+// 		logger("generated package: %v", pkg)
+// 		// make necessary functions for using
+// 		mkFuncs(pkg, prjName, pkgName, gonfigDir)
+// 		return true, pkg
+// 	}
+// 	return false, file
+// }
 
 func mkFuncs(impt, prj, pkg, fnDir string) {
 	pkg = sToLower(pkg)

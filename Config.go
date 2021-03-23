@@ -1,12 +1,12 @@
 package gonfig
 
-// Config : AUTO Created From /home/qmiao/Desktop/gonfig/toml/test.toml
+// Config : AUTO Created From "gonfig/toml/test.toml"
 type Config struct {
-	LogFile string
-	Path interface{}
 	Port int
 	Service interface{}
 	IP interface{}
+	LogFile string
+	Path interface{}
 	Storage struct {
 		BadgerDBPath string
 		DataBase string
@@ -18,19 +18,18 @@ type Config struct {
 		Version interface{}
 	}
 	Route struct {
+		Update string
 		Delete string
-		GetHash string
 		LsID string
 		LsObject string
-		Update string
-		Get string
-		GetID string
 		LsContext string
 		LsUser string
 		ROOT string
+		Get string
+		GetHash string
+		GetID string
 	}
 	File struct {
-		ClientMac string
 		ClientWin64 string
 		MaskConfig string
 		MaskLinux64 string
@@ -38,12 +37,13 @@ type Config struct {
 		MaskWin64 string
 		ClientConfig string
 		ClientLinux64 string
+		ClientMac string
 	}
 	Server struct {
-		IP interface{}
-		Port interface{}
 		Protocol string
 		Service string
+		IP interface{}
+		Port interface{}
 	}
 	Access struct {
 		Timeout int
@@ -62,7 +62,7 @@ type Config struct {
 	}
 }
 
-// Config1 : AUTO Created From /home/qmiao/Desktop/gonfig/toml/test1.toml
+// Config1 : AUTO Created From "gonfig/toml/test1.toml"
 type Config1 struct {
 	Version string
 	Storage struct {
@@ -76,32 +76,32 @@ type Config1 struct {
 		Version interface{}
 	}
 	Route struct {
-		ROOT string
+		Get string
 		GetID string
-		LsUser string
-		GetHash string
 		LsContext string
 		LsID string
-		LsObject string
+		LsUser string
+		ROOT string
 		Update string
 		Delete string
-		Get string
+		GetHash string
+		LsObject string
 	}
 	File struct {
+		MaskConfig string
+		MaskLinux64 string
+		MaskMac string
 		MaskWin64 string
 		ClientConfig string
 		ClientLinux64 string
 		ClientMac string
 		ClientWin64 string
-		MaskConfig string
-		MaskLinux64 string
-		MaskMac string
 	}
 	Server struct {
-		Protocol string
-		Service string
 		IP interface{}
 		Port interface{}
+		Protocol string
+		Service string
 	}
 	Access struct {
 		Timeout int

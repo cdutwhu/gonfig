@@ -1,7 +1,7 @@
 package strugen
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 )
 
@@ -106,7 +106,7 @@ func GenStruct(tomlFile, struName, pkgName, struFile string) bool {
 		return false
 	}
 
-	bytes, err := ioutil.ReadFile(tomlFile)
+	bytes, err := os.ReadFile(tomlFile)
 	if warnP1OnErr("%v", err) != nil {
 		return false
 	}
@@ -125,7 +125,7 @@ func GenStruct(tomlFile, struName, pkgName, struFile string) bool {
 	if struFile == "" {
 		struFile = dir + "/" + fname + ".go"
 	}
-	if bytes, err := ioutil.ReadFile(struFile); err == nil && sHasPrefix(string(bytes), "package ") {
+	if bytes, err := os.ReadFile(struFile); err == nil && sHasPrefix(string(bytes), "package ") {
 		addPkg = false
 	}
 
@@ -140,6 +140,10 @@ func GenStruct(tomlFile, struName, pkgName, struFile string) bool {
 			selfDev = true
 		}
 	}
+
+	// Trim tomlFile showing on "AUTO..." comment line
+	tomlFile = tomlFile[sIndex(tomlFile, "/"+pkgName):]
+	tomlFile = "\"" + tomlFile[1:] + "\""
 
 	struStr += fSf("// %s : AUTO Created From %s\n", struName, tomlFile)
 	struStr += fSf("type %s struct {\n", struName)
@@ -162,7 +166,7 @@ func GenStruct(tomlFile, struName, pkgName, struFile string) bool {
 
 // GenNewCfg :
 func GenNewCfg(struFile string) bool {
-	bytes, err := ioutil.ReadFile(struFile)
+	bytes, err := os.ReadFile(struFile)
 	if err != nil {
 		return false
 	}
@@ -182,8 +186,8 @@ func GenNewCfg(struFile string) bool {
 	src += `func NewCfg(cfgStruName string, mReplExpr map[string]string, cfgPaths ...string) interface{} {` + "\n"
 	src += `	var cfg interface{}` + "\n"
 	src += `	switch cfgStruName {` + "\n"
-	for _, cfgname := range struNames {
-		src += fSf("\tcase \"%[1]s\":\n\t\tcfg = &%[1]s{}\n", cfgname)
+	for _, cfgName := range struNames {
+		src += fSf("\tcase \"%[1]s\":\n\t\tcfg = &%[1]s{}\n", cfgName)
 	}
 	src += "\tdefault:\n\t\treturn nil\n"
 	src += "\t}\n"
