@@ -145,8 +145,10 @@ func GenStruct(tomlFile, struName, pkgName, struFile string) bool {
 
 	// Trim tomlFile showing on "AUTO..." comment line
 	if prjName, ok := gonfig.PrjName(); ok {
-		tomlFile = tomlFile[sIndex(tomlFile, "/"+prjName):]
-		tomlFile = "\"" + tomlFile[1:] + "\""
+		if idx := sIndex(tomlFile, "/"+prjName); idx >= 0 {
+			tomlFile = tomlFile[idx:]
+			tomlFile = "\"" + tomlFile[1:] + "\""
+		}
 	}
 
 	struStr += fSf("// %s : AUTO Created From %s\n", struName, tomlFile)
